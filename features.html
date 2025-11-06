@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - SEER Platform</title>
+    <link rel="icon" href="assets/Logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            overflow-x: hidden;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+
+        /* Particles Background */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .lang-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        nav .right-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        
+        .logo img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        nav .cta-button {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        nav .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Page Header */
+        .page-header {
+            position: relative;
+            padding: 10rem 5% 6rem;
+            text-align: center;
+            z-index: 2;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0a0a0a 100%);
+        }
+
+        .page-header h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .page-header p {
+            font-size: 1.5rem;
+            color: #b0b0b0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Features Detail Section */
+        .features-detail {
+            position: relative;
+            padding: 6rem 5%;
+            background: #0a0a0a;
+            z-index: 2;
+        }
+
+        .feature-detail-item {
+            max-width: 1200px;
+            margin: 0 auto 8rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            scroll-margin-top: 100px;
+        }
+
+        .feature-detail-item:nth-child(even) {
+            direction: rtl;
+        }
+
+        .feature-detail-item:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .feature-image {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(102, 126, 234, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .feature-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .feature-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-content .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-content p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .feature-highlights {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .feature-highlights li {
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .feature-highlights li:before {
+            content: "✨";
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .primary-btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            position: relative;
+            padding: 8rem 5%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            text-align: center;
+            z-index: 2;
+        }
+
+        .cta-section h2 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cta-section p {
+            font-size: 1.5rem;
+            color: #b0b0b0;
+            margin-bottom: 3rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .secondary-btn {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            color: #667eea;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            padding: 4rem 5%;
+            background: #000000;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: #667eea;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #888;
+            text-decoration: none;
+            line-height: 2;
+            display: block;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #666;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .page-header h1 {
+                font-size: 3rem;
+            }
+            
+            .feature-detail-item {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-detail-item:nth-child(even) {
+                direction: ltr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 3%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            nav .container {
+                gap: 0.5rem;
+                flex-wrap: wrap;
+            }
+            
+            nav .right-section {
+                gap: 0.5rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .logo img {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .lang-toggle {
+                padding: 0.3rem;
+            }
+            
+            .lang-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+            
+            nav .cta-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .page-header {
+                padding: 8rem 3% 4rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+                line-height: 1.3;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .features-detail {
+                padding: 3rem 3%;
+            }
+            
+            .feature-detail-item {
+                margin-bottom: 4rem;
+                gap: 2rem;
+            }
+            
+            .feature-content h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+            
+            .feature-content .feature-icon {
+                font-size: 3rem;
+            }
+            
+            .feature-content p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .feature-highlights li {
+                font-size: 1rem;
+                padding: 0.8rem 0;
+            }
+            
+            .primary-btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+                width: 100%;
+            }
+            
+            .cta-section {
+                padding: 4rem 3%;
+            }
+            
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+            
+            .cta-section p {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .secondary-btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+                width: 100%;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            footer {
+                padding: 3rem 3%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            nav {
+                padding: 0.8rem 4%;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            .logo img {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .page-header {
+                padding: 7rem 4% 3rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .page-header p {
+                font-size: 0.95rem;
+            }
+            
+            .feature-detail-item {
+                margin-bottom: 3rem;
+                gap: 1.5rem;
+            }
+            
+            .feature-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .feature-content .feature-icon {
+                font-size: 2.5rem;
+            }
+            
+            .feature-content p {
+                font-size: 0.95rem;
+            }
+            
+            .feature-highlights li {
+                font-size: 0.95rem;
+            }
+            
+            .cta-section h2 {
+                font-size: 1.7rem;
+            }
+            
+            .cta-section p {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/Logo.png" alt="SEER Logo">
+                <span>SEER</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#features" data-en="Features" data-zh="功能">Features</a></li>
+                <li><a href="index.html#showcase" data-en="Showcase" data-zh="展示">Showcase</a></li>
+                <li><a href="pro-membership.html" data-en="Pro" data-zh="Pro会员">Pro</a></li>
+                <li><a href="index.html#download" data-en="Download" data-zh="下载">Download</a></li>
+            </ul>
+            <div class="right-section">
+                <div class="lang-toggle">
+                    <button class="lang-btn active" onclick="switchLanguage('en')" id="lang-en">EN</button>
+                    <button class="lang-btn" onclick="switchLanguage('zh')" id="lang-zh">中文</button>
+                </div>
+                <a href="https://social-app-for-university.vercel.app/" class="cta-button" data-en="Try Now" data-zh="立即体验">Try Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1 data-en="Powerful Features" data-zh="强大功能">Powerful Features</h1>
+        <p data-en="Discover all the amazing features that make SEER the ultimate campus social platform" data-zh="探索让 SEER 成为终极校园社交平台的所有强大功能">Discover all the amazing features that make SEER the ultimate campus social platform</p>
+    </section>
+
+    <!-- Features Detail -->
+    <section class="features-detail">
+        <!-- Feature 1: Real-time Messaging -->
+        <div class="feature-detail-item" id="messaging">
+            <div class="feature-image">
+                <img src="assets/Call.png" alt="Real-time Messaging">
+            </div>
+            <div class="feature-content">
+                <div class="feature-icon">💬</div>
+                <h2 data-en="Real-time Messaging" data-zh="实时通讯">Real-time Messaging</h2>
+                <p data-en="Stay connected with friends and classmates through seamless real-time communication. Experience high-quality voice and video calls, private and group chats, and rich media message support." data-zh="通过无缝实时通信与朋友和同学保持联系。体验高质量语音和视频通话、私聊和群聊以及丰富的媒体消息支持。">Stay connected with friends and classmates through seamless real-time communication. Experience high-quality voice and video calls, private and group chats, and rich media message support.</p>
+                <ul class="feature-highlights">
+                    <li data-en="HD voice and video calls with low latency" data-zh="低延迟高清语音和视频通话">HD voice and video calls with low latency</li>
+                    <li data-en="Private chats and group conversations up to 500 members" data-zh="私聊和最多500人的群组对话">Private chats and group conversations up to 500 members</li>
+                    <li data-en="Share photos, videos, documents, and location" data-zh="分享照片、视频、文档和位置">Share photos, videos, documents, and location</li>
+                    <li data-en="Message encryption for privacy and security" data-zh="消息加密以保护隐私和安全">Message encryption for privacy and security</li>
+                    <li data-en="Typing indicators and read receipts" data-zh="输入指示器和已读回执">Typing indicators and read receipts</li>
+                </ul>
+                <a href="https://social-app-for-university.vercel.app/" class="primary-btn" data-en="Try Messaging" data-zh="体验通讯">Try Messaging</a>
+            </div>
+        </div>
+
+        <!-- Feature 2: Live Streaming -->
+        <div class="feature-detail-item" id="streaming">
+            <div class="feature-image">
+                <img src="assets/Pro.png" alt="Live Streaming">
+            </div>
+            <div class="feature-content">
+                <div class="feature-icon">🎥</div>
+                <h2 data-en="Live Streaming" data-zh="直播互动">Live Streaming</h2>
+                <p data-en="Pro members can start their own live streaming room and build influence on campus. Engage with your audience through real-time comments, virtual gifts, and interactive features." data-zh="Pro会员可以开启自己的直播间，在校园中建立影响力。通过实时评论、虚拟礼物和互动功能与观众互动。">Pro members can start their own live streaming room and build influence on campus. Engage with your audience through real-time comments, virtual gifts, and interactive features.</p>
+                <ul class="feature-highlights">
+                    <li data-en="HD live streaming with adaptive bitrate" data-zh="具有自适应比特率的高清直播">HD live streaming with adaptive bitrate</li>
+                    <li data-en="Virtual gift system to support your favorite streamers" data-zh="虚拟礼物系统支持您喜爱的主播">Virtual gift system to support your favorite streamers</li>
+                    <li data-en="Real-time comment feed and emoji reactions" data-zh="实时评论流和表情反应">Real-time comment feed and emoji reactions</li>
+                    <li data-en="Stream analytics and viewer insights" data-zh="直播分析和观众洞察">Stream analytics and viewer insights</li>
+                    <li data-en="Schedule streams and notify followers" data-zh="安排直播并通知关注者">Schedule streams and notify followers</li>
+                </ul>
+                <a href="pro-membership.html" class="primary-btn" data-en="Upgrade to Pro" data-zh="升级到Pro">Upgrade to Pro</a>
+            </div>
+        </div>
+
+        <!-- Feature 3: AI Assistant -->
+        <div class="feature-detail-item" id="ai">
+            <div class="feature-image">
+                <img src="assets/Ai.png" alt="AI Assistant">
+            </div>
+            <div class="feature-content">
+                <div class="feature-icon">🤖</div>
+                <h2 data-en="AI Assistant" data-zh="AI助手">AI Assistant</h2>
+                <p data-en="Unlock your creativity with our powerful AI assistant. From intelligent conversations to image generation, music creation, and video production - all at your fingertips." data-zh="使用我们强大的AI助手释放您的创造力。从智能对话到图像生成、音乐创作和视频制作——一切触手可及。">Unlock your creativity with our powerful AI assistant. From intelligent conversations to image generation, music creation, and video production - all at your fingertips.</p>
+                <ul class="feature-highlights">
+                    <li data-en="AI-powered chat for homework help and questions" data-zh="AI聊天助手帮助作业和问题解答">AI-powered chat for homework help and questions</li>
+                    <li data-en="Generate stunning images from text descriptions" data-zh="从文本描述生成令人惊叹的图像">Generate stunning images from text descriptions</li>
+                    <li data-en="Create original music and soundtracks" data-zh="创作原创音乐和配乐">Create original music and soundtracks</li>
+                    <li data-en="AI video editing and production tools" data-zh="AI视频编辑和制作工具">AI video editing and production tools</li>
+                    <li data-en="Smart content recommendations" data-zh="智能内容推荐">Smart content recommendations</li>
+                </ul>
+                <a href="https://social-app-for-university.vercel.app/" class="primary-btn" data-en="Try AI Tools" data-zh="体验AI工具">Try AI Tools</a>
+            </div>
+        </div>
+
+        <!-- Feature 4: Casual Games -->
+        <div class="feature-detail-item" id="games">
+            <div class="feature-image">
+                <img src="assets/Gomoku.png" alt="Casual Games">
+            </div>
+            <div class="feature-content">
+                <div class="feature-icon">🎮</div>
+                <h2 data-en="Casual Games" data-zh="休闲游戏">Casual Games</h2>
+                <p data-en="Take a break and have fun with classic strategy games. Play Gomoku and Chinese Chess with friends or challenge our AI for practice. Make socializing more entertaining!" data-zh="休息一下，玩经典策略游戏。与朋友一起玩五子棋和中国象棋，或挑战我们的AI进行练习。让社交更有趣！">Take a break and have fun with classic strategy games. Play Gomoku and Chinese Chess with friends or challenge our AI for practice. Make socializing more entertaining!</p>
+                <ul class="feature-highlights">
+                    <li data-en="Gomoku (Five in a Row) with matchmaking system" data-zh="具有匹配系统的五子棋">Gomoku (Five in a Row) with matchmaking system</li>
+                    <li data-en="Chinese Chess with full rule implementation" data-zh="完整规则实现的中国象棋">Chinese Chess with full rule implementation</li>
+                    <li data-en="Play against friends or AI opponents" data-zh="与朋友或AI对手对战">Play against friends or AI opponents</li>
+                    <li data-en="Game history and statistics tracking" data-zh="游戏历史和统计跟踪">Game history and statistics tracking</li>
+                    <li data-en="Real-time spectator mode for popular matches" data-zh="热门比赛的实时观众模式">Real-time spectator mode for popular matches</li>
+                </ul>
+                <a href="https://social-app-for-university.vercel.app/" class="primary-btn" data-en="Start Playing" data-zh="开始游戏">Start Playing</a>
+            </div>
+        </div>
+
+        <!-- Feature 5: Event System -->
+        <div class="feature-detail-item" id="events">
+            <div class="feature-image">
+                <img src="assets/activity.png" alt="Event System">
+            </div>
+            <div class="feature-content">
+                <div class="feature-icon">🎪</div>
+                <h2 data-en="Event System" data-zh="活动系统">Event System</h2>
+                <p data-en="Discover and participate in campus events. From academic lectures to social gatherings, sports activities to study sessions - never miss out on campus life!" data-zh="发现并参与校园活动。从学术讲座到社交聚会、体育活动到学习小组——永远不会错过校园生活！">Discover and participate in campus events. From academic lectures to social gatherings, sports activities to study sessions - never miss out on campus life!</p>
+                <ul class="feature-highlights">
+                    <li data-en="Create and manage your own events" data-zh="创建和管理您自己的活动">Create and manage your own events</li>
+                    <li data-en="Browse events by category, date, and location" data-zh="按类别、日期和位置浏览活动">Browse events by category, date, and location</li>
+                    <li data-en="RSVP and invite friends to join" data-zh="回复参加并邀请朋友加入">RSVP and invite friends to join</li>
+                    <li data-en="Calendar integration and reminders" data-zh="日历集成和提醒">Calendar integration and reminders</li>
+                    <li data-en="Event check-in with QR codes" data-zh="使用二维码签到活动">Event check-in with QR codes</li>
+                </ul>
+                <a href="https://social-app-for-university.vercel.app/" class="primary-btn" data-en="Explore Events" data-zh="探索活动">Explore Events</a>
+            </div>
+        </div>
+
+        <!-- Feature 6: Social Interaction -->
+        <div class="feature-detail-item" id="social">
+            <div class="feature-image">
+                <img src="assets/Homepage.png" alt="Social Interaction">
+            </div>
+            <div class="feature-content">
+                <div class="feature-icon">🌟</div>
+                <h2 data-en="Social Interaction" data-zh="社交互动">Social Interaction</h2>
+                <p data-en="Share your campus moments, connect with friends, and build your social network. Post updates, photos, and thoughts while engaging with others through likes, comments, and shares." data-zh="分享您的校园时刻，与朋友联系，建立您的社交网络。发布更新、照片和想法，同时通过点赞、评论和分享与他人互动。">Share your campus moments, connect with friends, and build your social network. Post updates, photos, and thoughts while engaging with others through likes, comments, and shares.</p>
+                <ul class="feature-highlights">
+                    <li data-en="Post text, photos, videos, and mixed media" data-zh="发布文字、照片、视频和混合媒体">Post text, photos, videos, and mixed media</li>
+                    <li data-en="Follow friends and discover new connections" data-zh="关注朋友并发现新联系">Follow friends and discover new connections</li>
+                    <li data-en="Like, comment, and share posts" data-zh="点赞、评论和分享帖子">Like, comment, and share posts</li>
+                    <li data-en="Personalized feed based on your interests" data-zh="基于兴趣的个性化信息流">Personalized feed based on your interests</li>
+                    <li data-en="Privacy controls for your content" data-zh="内容的隐私控制">Privacy controls for your content</li>
+                </ul>
+                <a href="https://social-app-for-university.vercel.app/" class="primary-btn" data-en="Share Moments" data-zh="分享时刻">Share Moments</a>
+            </div>
+        </div>
+
+        <!-- Feature 7: Campus Map -->
+        <div class="feature-detail-item" id="map">
+            <div class="feature-image">
+                <img src="assets/Map.png" alt="Campus Map">
+            </div>
+            <div class="feature-content">
+                <div class="feature-icon">🗺️</div>
+                <h2 data-en="Campus Map" data-zh="校园地图">Campus Map</h2>
+                <p data-en="Navigate your campus with ease using our interactive map feature. Find buildings, classrooms, facilities, and even locate your friends in real-time." data-zh="使用我们的交互式地图功能轻松导航您的校园。查找建筑物、教室、设施，甚至实时定位您的朋友。">Navigate your campus with ease using our interactive map feature. Find buildings, classrooms, facilities, and even locate your friends in real-time.</p>
+                <ul class="feature-highlights">
+                    <li data-en="Detailed interactive campus map" data-zh="详细的互动校园地图">Detailed interactive campus map</li>
+                    <li data-en="Search for buildings, classrooms, and facilities" data-zh="搜索建筑物、教室和设施">Search for buildings, classrooms, and facilities</li>
+                    <li data-en="Turn-by-turn navigation on campus" data-zh="校园内逐步导航">Turn-by-turn navigation on campus</li>
+                    <li data-en="Locate friends with permission" data-zh="经许可定位朋友">Locate friends with permission</li>
+                    <li data-en="Discover nearby amenities and services" data-zh="发现附近的便利设施和服务">Discover nearby amenities and services</li>
+                </ul>
+                <a href="https://social-app-for-university.vercel.app/" class="primary-btn" data-en="Explore Map" data-zh="探索地图">Explore Map</a>
+            </div>
+        </div>
+
+        <!-- Feature 8: Campus Posts -->
+        <div class="feature-detail-item" id="posts">
+            <div class="feature-image">
+                <img src="assets/Homepage.png" alt="Campus Posts">
+            </div>
+            <div class="feature-content">
+                <div class="feature-icon">📝</div>
+                <h2 data-en="Campus Posts" data-zh="校园帖子">Campus Posts</h2>
+                <p data-en="Join discussions, share experiences, ask questions, and exchange ideas with the campus community. Build meaningful connections through thoughtful conversations." data-zh="参与讨论、分享经验、提出问题并与校园社区交流想法。通过深思熟虑的对话建立有意义的联系。">Join discussions, share experiences, ask questions, and exchange ideas with the campus community. Build meaningful connections through thoughtful conversations.</p>
+                <ul class="feature-highlights">
+                    <li data-en="Create posts in various categories" data-zh="在各种类别中创建帖子">Create posts in various categories</li>
+                    <li data-en="Rich text formatting and media attachments" data-zh="富文本格式和媒体附件">Rich text formatting and media attachments</li>
+                    <li data-en="Upvote and downvote system" data-zh="点赞和踩系统">Upvote and downvote system</li>
+                    <li data-en="Threaded comments for better discussions" data-zh="线程评论以便更好讨论">Threaded comments for better discussions</li>
+                    <li data-en="Save posts for later reading" data-zh="保存帖子供以后阅读">Save posts for later reading</li>
+                </ul>
+                <a href="https://social-app-for-university.vercel.app/" class="primary-btn" data-en="Join Discussion" data-zh="参与讨论">Join Discussion</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2 data-en="Ready to Experience All Features?" data-zh="准备体验所有功能了吗？">Ready to Experience All Features?</h2>
+        <p data-en="Join SEER today and unlock the full potential of campus social networking" data-zh="立即加入SEER，释放校园社交网络的全部潜力">Join SEER today and unlock the full potential of campus social networking</p>
+        <div class="cta-buttons">
+            <a href="https://social-app-for-university.vercel.app/" class="primary-btn" data-en="Try Demo Now" data-zh="立即体验 Demo">Try Demo Now</a>
+            <a href="pro-membership.html" class="secondary-btn" data-en="Learn About Pro" data-zh="了解Pro会员">Learn About Pro</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SEER</h3>
+                <p data-en="Next-generation campus social platform" data-zh="下一代校园社交平台">Next-generation campus social platform</p>
+                <p>© 2025 SEER. All rights reserved.</p>
+            </div>
+            <div class="footer-section">
+                <h3 data-en="Product" data-zh="产品">Product</h3>
+                <a href="features.html" data-en="Features" data-zh="功能介绍">Features</a>
+                <a href="pro-membership.html" data-en="Pro Membership" data-zh="Pro会员">Pro Membership</a>
+                <a href="index.html#download" data-en="Download" data-zh="下载">Download</a>
+            </div>
+            <div class="footer-section">
+                <h3 data-en="Support" data-zh="支持">Support</h3>
+                <a href="#" data-en="Help Center" data-zh="帮助中心">Help Center</a>
+                <a href="#" data-en="Privacy Policy" data-zh="隐私政策">Privacy Policy</a>
+                <a href="#" data-en="Terms of Service" data-zh="服务条款">Terms of Service</a>
+            </div>
+            <div class="footer-section">
+                <h3 data-en="Contact" data-zh="联系">Contact</h3>
+                <a href="https://github.com/Yunk-S" target="_blank">GitHub</a>
+                <a href="mailto:Yunkun.Shi23@student.xjtlu.edu.cn">Email</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-en="Made with ❤️ for Campus Community" data-zh="用 ❤️ 为校园社区打造">Made with ❤️ for Campus Community</p>
+        </div>
+    </footer>
+
+    <script src="particles.js"></script>
+    <script>
+        // Language switching functionality
+        let currentLang = 'en';
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const htmlTag = document.documentElement;
+            htmlTag.setAttribute('lang', lang);
+
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('lang-' + lang).classList.add('active');
+
+            // Update all translatable elements
+            const elements = document.querySelectorAll('[data-en][data-zh]');
+            elements.forEach(element => {
+                const text = element.getAttribute('data-' + lang);
+                if (element.tagName === 'A' || element.tagName === 'BUTTON' || element.tagName === 'P' || element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3' || element.tagName === 'LI') {
+                    element.innerHTML = text;
+                } else {
+                    element.textContent = text;
+                }
+            });
+
+            // Save language preference
+            localStorage.setItem('seer_lang', lang);
+        }
+
+        // Load saved language preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('seer_lang') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>
+
