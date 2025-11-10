@@ -31,7 +31,16 @@ const API_ENDPOINTS = {
 const API = {
   async getSurveys() {
     try {
-      const response = await fetch(`${API_CONFIG.baseURL}${API_ENDPOINTS.surveys}`);
+      const response = await fetch(`${API_CONFIG.baseURL}${API_ENDPOINTS.surveys}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
+      if (!response.ok) {
+        console.error('Surveys API responded with', response.status);
+        throw new Error(`Surveys API responded with ${response.status}`);
+      }
       const data = await response.json();
       return data.success ? data.data : [];
     } catch (error) {
@@ -50,6 +59,10 @@ const API = {
         },
         body: JSON.stringify(surveyData)
       });
+      if (!response.ok) {
+        console.error('Submit survey failed with', response.status);
+        throw new Error(`Submit survey failed with ${response.status}`);
+      }
       const data = await response.json();
       
       // Also save to localStorage as backup

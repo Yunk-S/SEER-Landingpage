@@ -11,6 +11,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Cache-Control', 'no-store');
 
   // Handle OPTIONS request for CORS preflight
   if (req.method === 'OPTIONS') {
@@ -31,7 +32,20 @@ export default async function handler(req, res) {
     
     // POST: Add a new survey
     else if (req.method === 'POST') {
-      const surveyData = req.body;
+      let surveyData = req.body;
+
+      // Handle cases where body arrives as a JSON string
+      if (typeof surveyData === 'string') {
+        try {
+          surveyData = JSON.parse(surveyData);
+        } catch (parseError) {
+          console.error('Invalid JSON payload:', parseError);
+          return res.status(400).json({
+            success: false,
+            error: 'Invalid JSON payload'
+          });
+        }
+      }
       
       // Validate survey data
       if (!surveyData || !surveyData.responses) {
