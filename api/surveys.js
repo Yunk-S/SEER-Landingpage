@@ -1,9 +1,23 @@
 // Vercel Serverless Function for handling survey data
-// This uses Vercel KV for data storage
+// This uses Vercel KV (or Upstash Redis via REST) for data storage
 
-import { kv } from '@vercel/kv';
+import { createClient, kv as defaultKv } from '@vercel/kv';
 
 const SURVEYS_KEY = 'seer_surveys';
+
+// Prefer explicit client using available env vars (supports both Vercel KV and Upstash Redis)
+const kv =
+  (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+    ? createClient({
+        url: process.env.KV_REST_API_URL,
+        token: process.env.KV_REST_API_TOKEN
+      })
+    : (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
+      ? createClient({
+          url: process.env.UPSTASH_REDIS_REST_URL,
+          token: process.env.UPSTASH_REDIS_REST_TOKEN
+        })
+      : defaultKv;
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -12,6 +26,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('CDN-Cache-Control', 'no-store');
 
   // Handle OPTIONS request for CORS preflight
   if (req.method === 'OPTIONS') {

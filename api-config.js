@@ -6,7 +6,7 @@ const API_CONFIG = {
   local: 'http://localhost:3000/api',
   
   // For production (change to your Vercel domain)
-  production: 'https://your-app.vercel.app/api',
+  production: 'https://seer-landingpage.vercel.app/api',
   
   // Auto-detect environment
   get baseURL() {
